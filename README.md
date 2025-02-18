@@ -42,5 +42,5 @@
 
 ## Deployment
 Code changes are automatically deployed based on branch updates:
-- Development Deployment: Merging changes into the `main` branch triggers an automatic deployment to talkdev.meeno.com, which is hosted on an EC2 instance (35.163.245.111).
-- Production Deployment: To deploy changes to production, push or merge updates to the `prod` branch. This will trigger an automatic deployment to talk.meeno.com, which is also hosted on the EC2 instance (35.163.245.111).
+- Development Deployment: Merging changes into the `main` branch triggers an automatic deployment to [talkdev.meeno.com](talkdev.meeno.com), which is hosted on an EC2 instance (35.163.245.111).
+- Production Deployment: To deploy changes to production, push or merge updates to the `prod` branch. This will trigger an automatic deployment to [talk.meeno.com](talk.meeno.com), which is also hosted on the EC2 instance (35.163.245.111).
