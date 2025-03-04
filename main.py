@@ -45,11 +45,11 @@ app.add_middleware(
 class TokenRequest(BaseModel):
     scene_name: str
     participant_name: str
-    metadata: Optional[Dict[str, str]] = None
+    metadata: Optional[str] = None
     participant_attributes: Optional[Dict[str, str]] = None
 
 
-def generate_livekit_token(scene_name: str, participant_name: str, metadata: Dict, participant_attributes: Dict):
+def generate_livekit_token(scene_name: str, participant_name: str, metadata: str, participant_attributes: Dict):
     """Generate a LiveKit access token using livekit.api"""
 
     token = (
@@ -60,7 +60,8 @@ def generate_livekit_token(scene_name: str, participant_name: str, metadata: Dic
     )
 
     if metadata:
-        token.metadata = metadata
+        # Set metadata directly as it's already a string
+        token = token.with_metadata(metadata)
     if participant_attributes:
         token.set_claim("participantAttributes", participant_attributes)
 
@@ -79,7 +80,7 @@ async def generate_token(request: TokenRequest):
     token = generate_livekit_token(
         request.scene_name,
         request.participant_name,
-        request.metadata or {},
+        request.metadata or "",
         request.participant_attributes or {},
     )
 
