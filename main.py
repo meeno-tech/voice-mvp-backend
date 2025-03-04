@@ -29,7 +29,8 @@ if ENVIRONMENT == "PROD":
     ]
 elif ENVIRONMENT == "DEV":
     origins = [
-        "http://localhost:8082"
+        "http://localhost:8082",
+        "http://localhost:8081"
     ]
 else:
     raise ValueError("ENVIRONMENT must be set to PROD or DEV in the .env file")
@@ -45,11 +46,11 @@ app.add_middleware(
 class TokenRequest(BaseModel):
     scene_name: str
     participant_name: str
-    metadata: Optional[Dict[str, str]] = None
+    metadata: Optional[str] = None
     participant_attributes: Optional[Dict[str, str]] = None
 
 
-def generate_livekit_token(scene_name: str, participant_name: str, metadata: Dict, participant_attributes: Dict):
+def generate_livekit_token(scene_name: str, participant_name: str, metadata: str, participant_attributes: Dict):
     """Generate a LiveKit access token using livekit.api"""
 
     token = (
@@ -61,6 +62,11 @@ def generate_livekit_token(scene_name: str, participant_name: str, metadata: Dic
                                  can_update_own_metadata=True))
         .with_metadata("metadata")
     )
+
+    if metadata:
+        token = token.with_metadata(metadata)
+    if participant_attributes:
+        token.set_claim("participantAttributes", participant_attributes)
 
     return token.to_jwt()
 
@@ -75,7 +81,7 @@ async def generate_token(request: TokenRequest):
     token = generate_livekit_token(
         request.scene_name,
         request.participant_name,
-        request.metadata or {},
+        request.metadata or "",
         request.participant_attributes or {},
     )
 
