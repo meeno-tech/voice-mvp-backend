@@ -1,12 +1,13 @@
+import datetime
 import os
+from typing import Dict, Optional
+
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Optional, Dict
-from dotenv import load_dotenv
 from livekit.api import AccessToken, VideoGrants
 from loguru import logger
-import datetime
+from pydantic import BaseModel
 
 load_dotenv()
 
@@ -25,7 +26,11 @@ if ENVIRONMENT == "PROD":
         "https://www.be-vokal.com",
         "https://be-vokal.com",
         "https://www.simsom.com",
-        "https://simsom.com"
+        "https://simsom.com",
+        "https://meeno.com",
+        "https://www.meeno.com",
+        "https://talk.meeno.com",
+        "https://my.meeno.com",
     ]
 elif ENVIRONMENT == "DEV":
     origins = [
